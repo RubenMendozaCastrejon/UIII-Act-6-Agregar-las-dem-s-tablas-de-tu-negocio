@@ -29,3 +29,21 @@ Editar
 <img width="1920" height="1029" alt="image" src="https://github.com/user-attachments/assets/75875490-879c-44df-b999-b0d013d41b8a" />
 Eliminar
 <img width="1920" height="1028" alt="image" src="https://github.com/user-attachments/assets/72289695-a288-4f9c-832f-da8021337da4" />
+
+**Inversiones**
+<img width="1920" height="1030" alt="image" src="https://github.com/user-attachments/assets/3add2273-241d-4550-9c4a-548be355b6ff" />
+Agregar
+<img width="1920" height="1030" alt="image" src="https://github.com/user-attachments/assets/77de6316-e9a6-419e-b8a5-f7e9ad9161af" />
+Editar
+<img width="1920" height="1027" alt="image" src="https://github.com/user-attachments/assets/5747dab0-f890-4aff-9f84-1cbc7015b190" />
+Eliminar
+<img width="1920" height="1025" alt="image" src="https://github.com/user-attachments/assets/6dba3dc9-5d72-4503-bfcf-ceab36a6d1e9" />
+
+**Transaccion**
+<img width="1920" height="1030" alt="image" src="https://github.com/user-attachments/assets/946b1cf2-573b-4db0-93e0-8a1ed42fdfa0" />
+Agregar
+<img width="1920" height="1028" alt="image" src="https://github.com/user-attachments/assets/739eff0e-bb39-4de1-9e09-7fec61cb8648" />
+Editar
+<img width="1920" height="1024" alt="image" src="https://github.com/user-attachments/assets/71fb5aa8-024f-4902-9968-a22eac475cba" />
+Eliminar
+<img width="1920" height="1028" alt="image" src="https://github.com/user-attachments/assets/7cf8e913-780e-4b8e-9659-31b1209cbbca" />
