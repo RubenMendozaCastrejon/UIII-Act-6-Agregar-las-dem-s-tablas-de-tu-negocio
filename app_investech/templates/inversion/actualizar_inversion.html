@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Actualizar Inversión</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'realizar_actualizacion_inversion' inversion.id %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="portafolio" class="form-label">Portafolio</label>
+                            <select class="form-select" id="portafolio" name="portafolio" required>
+                                {% for portafolio in portafolios %}
+                                <option value="{{ portafolio.id }}" {% if portafolio.id == inversion.portafolio.id %}selected{% endif %}>
+                                    {{ portafolio.nombre }} ({{ portafolio.usuario.nombre }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="activo" class="form-label">Activo</label>
+                            <select class="form-select" id="activo" name="activo" required>
+                                {% for activo in activos %}
+                                <option value="{{ activo.id }}" {% if activo.id == inversion.activo.id %}selected{% endif %} data-precio="{{ activo.precio_actual }}">
+                                    {{ activo.nombre }} ({{ activo.simbolo }}) - ${{ activo.precio_actual }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" step="0.0001" value="{{ inversion.cantidad }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="precio_compra" class="form-label">Precio de Compra</label>
+                            <input type="number" class="form-control" id="precio_compra" name="precio_compra" step="0.01" value="{{ inversion.precio_compra }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 p-3 bg-light rounded">
+                        <h6 class="mb-2">Resumen de la Inversión:</h6>
+                        <p class="mb-1">Inversión Inicial: ${{ inversion.inversion_inicial|floatformat:2 }}</p>
+                        <p class="mb-1">Valor Actual: ${{ inversion.valor_actual|floatformat:2 }}</p>
+                        <p class="mb-0 {% if inversion.ganancia_perdida >= 0 %}text-success{% else %}text-danger{% endif %}">
+                            Ganancia/Pérdida: ${{ inversion.ganancia_perdida|floatformat:2 }}
+                        </p>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'inicio_inversion' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-save me-1"></i>Actualizar Inversión
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

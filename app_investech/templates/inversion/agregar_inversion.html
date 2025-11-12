@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-purple text-white">
+                <h4 class="mb-0"><i class="fas fa-chart-line me-2"></i>Agregar Nueva Inversión</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="portafolio" class="form-label">Portafolio</label>
+                            <select class="form-select" id="portafolio" name="portafolio" required>
+                                <option value="">Seleccionar portafolio...</option>
+                                {% for portafolio in portafolios %}
+                                <option value="{{ portafolio.id }}">{{ portafolio.nombre }} ({{ portafolio.usuario.nombre }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="activo" class="form-label">Activo</label>
+                            <select class="form-select" id="activo" name="activo" required>
+                                <option value="">Seleccionar activo...</option>
+                                {% for activo in activos %}
+                                <option value="{{ activo.id }}" data-precio="{{ activo.precio_actual }}">
+                                    {{ activo.nombre }} ({{ activo.simbolo }}) - ${{ activo.precio_actual }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" step="0.0001" value="0.0000" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="precio_compra" class="form-label">Precio de Compra</label>
+                            <input type="number" class="form-control" id="precio_compra" name="precio_compra" step="0.01" value="0.00" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 p-3 bg-light rounded">
+                        <h6 class="mb-2">Resumen de la Inversión:</h6>
+                        <p class="mb-1" id="inversion-total">Inversión Total: $0.00</p>
+                        <p class="mb-0 text-muted" id="precio-actual">Precio actual del activo: $0.00</p>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'inicio_inversion' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-purple">
+                            <i class="fas fa-save me-1"></i>Guardar Inversión
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-purple {
+        background-color: #6f42c1 !important;
+    }
+    .btn-purple {
+        background-color: #6f42c1;
+        border-color: #6f42c1;
+        color: white;
+    }
+    .btn-purple:hover {
+        background-color: #5a359c;
+        border-color: #5a359c;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cantidadInput = document.getElementById('cantidad');
+        const precioCompraInput = document.getElementById('precio_compra');
+        const activoSelect = document.getElementById('activo');
+        const inversionTotal = document.getElementById('inversion-total');
+        const precioActual = document.getElementById('precio-actual');
+        
+        function calcularInversion() {
+            const cantidad = parseFloat(cantidadInput.value) || 0;
+            const precioCompra = parseFloat(precioCompraInput.value) || 0;
+            const total = cantidad * precioCompra;
+            inversionTotal.textContent = `Inversión Total: $${total.toFixed(2)}`;
+        }
+        
+        function actualizarPrecioActual() {
+            const selectedOption = activoSelect.options[activoSelect.selectedIndex];
+            const precio = selectedOption.getAttribute('data-precio');
+            if (precio) {
+                precioActual.textContent = `Precio actual del activo: $${parseFloat(precio).toFixed(2)}`;
+            } else {
+                precioActual.textContent = 'Precio actual del activo: $0.00';
+            }
+        }
+        
+        cantidadInput.addEventListener('input', calcularInversion);
+        precioCompraInput.addEventListener('input', calcularInversion);
+        activoSelect.addEventListener('change', actualizarPrecioActual);
+        
+        // Calcular inicialmente
+        calcularInversion();
+        actualizarPrecioActual();
+    });
+</script>
+{% endblock %}

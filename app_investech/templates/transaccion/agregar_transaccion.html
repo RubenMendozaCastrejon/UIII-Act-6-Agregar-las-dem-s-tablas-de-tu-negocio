@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-teal text-white">
+                <h4 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Agregar Nueva Transacción</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label">Usuario</label>
+                        <select class="form-select" id="usuario" name="usuario" required>
+                            <option value="">Seleccionar usuario...</option>
+                            {% for usuario in usuarios %}
+                            <option value="{{ usuario.id }}">{{ usuario.nombre }} {{ usuario.apellido }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="tipo_transaccion" class="form-label">Tipo de Transacción</label>
+                        <select class="form-select" id="tipo_transaccion" name="tipo_transaccion" required>
+                            <option value="">Seleccionar tipo...</option>
+                            <option value="deposito">Depósito</option>
+                            <option value="retiro">Retiro</option>
+                            <option value="compra">Compra</option>
+                            <option value="venta">Venta</option>
+                            <option value="transferencia">Transferencia</option>
+                        </select>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="monto" class="form-label">Monto ($)</label>
+                            <input type="number" class="form-control" id="monto" name="monto" step="0.01" value="0.00" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cantidad" class="form-label">Cantidad (Opcional)</label>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" step="0.0001" placeholder="Para compras/ventas">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 p-3 bg-light rounded">
+                        <h6 class="mb-2">Información de la Transacción:</h6>
+                        <p class="mb-1" id="info-tipo">Tipo: <span class="text-muted">No seleccionado</span></p>
+                        <p class="mb-1" id="info-monto">Monto: $0.00</p>
+                        <p class="mb-0 text-muted" id="info-descripcion">Descripción aparecerá aquí</p>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'inicio_transaccion' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-teal">
+                            <i class="fas fa-save me-1"></i>Guardar Transacción
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-teal {
+        background-color: #20c997 !important;
+    }
+    .btn-teal {
+        background-color: #20c997;
+        border-color: #20c997;
+        color: white;
+    }
+    .btn-teal:hover {
+        background-color: #1ba87e;
+        border-color: #1ba87e;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tipoSelect = document.getElementById('tipo_transaccion');
+        const montoInput = document.getElementById('monto');
+        const cantidadInput = document.getElementById('cantidad');
+        const infoTipo = document.getElementById('info-tipo');
+        const infoMonto = document.getElementById('info-monto');
+        const infoDescripcion = document.getElementById('info-descripcion');
+        
+        const descripciones = {
+            'deposito': 'Añade fondos a la cuenta del usuario',
+            'retiro': 'Retira fondos de la cuenta del usuario',
+            'compra': 'Compra de activos financieros',
+            'venta': 'Venta de activos financieros',
+            'transferencia': 'Transferencia de fondos entre cuentas'
+        };
+        
+        function actualizarInformacion() {
+            const tipo = tipoSelect.value;
+            const monto = parseFloat(montoInput.value) || 0;
+            const cantidad = parseFloat(cantidadInput.value) || 0;
+            
+            // Actualizar información del tipo
+            if (tipo) {
+                const tipoTexto = tipoSelect.options[tipoSelect.selectedIndex].text;
+                infoTipo.innerHTML = `Tipo: <span class="badge bg-${getColorTipo(tipo)}">${tipoTexto}</span>`;
+                infoDescripcion.textContent = descripciones[tipo] || '';
+            } else {
+                infoTipo.innerHTML = 'Tipo: <span class="text-muted">No seleccionado</span>';
+                infoDescripcion.textContent = 'Descripción aparecerá aquí';
+            }
+            
+            // Actualizar información del monto
+            infoMonto.textContent = `Monto: $${monto.toFixed(2)}`;
+            
+            // Mostrar/ocultar cantidad según el tipo
+            if (tipo === 'compra' || tipo === 'venta') {
+                cantidadInput.parentElement.style.display = 'block';
+                if (cantidad > 0) {
+                    infoDescripcion.textContent += ` - Cantidad: ${cantidad}`;
+                }
+            } else {
+                cantidadInput.parentElement.style.display = 'none';
+            }
+        }
+        
+        function getColorTipo(tipo) {
+            const colores = {
+                'deposito': 'success',
+                'retiro': 'danger',
+                'compra': 'info',
+                'venta': 'warning',
+                'transferencia': 'primary'
+            };
+            return colores[tipo] || 'secondary';
+        }
+        
+        tipoSelect.addEventListener('change', actualizarInformacion);
+        montoInput.addEventListener('input', actualizarInformacion);
+        cantidadInput.addEventListener('input', actualizarInformacion);
+        
+        // Calcular inicialmente
+        actualizarInformacion();
+    });
+</script>
+{% endblock %}

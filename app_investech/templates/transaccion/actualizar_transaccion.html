@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Actualizar Transacción</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'realizar_actualizacion_transaccion' transaccion.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label">Usuario</label>
+                        <select class="form-select" id="usuario" name="usuario" required>
+                            {% for usuario in usuarios %}
+                            <option value="{{ usuario.id }}" {% if usuario.id == transaccion.usuario.id %}selected{% endif %}>
+                                {{ usuario.nombre }} {{ usuario.apellido }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="tipo_transaccion" class="form-label">Tipo de Transacción</label>
+                        <select class="form-select" id="tipo_transaccion" name="tipo_transaccion" required>
+                            <option value="deposito" {% if transaccion.tipo_transaccion == 'deposito' %}selected{% endif %}>Depósito</option>
+                            <option value="retiro" {% if transaccion.tipo_transaccion == 'retiro' %}selected{% endif %}>Retiro</option>
+                            <option value="compra" {% if transaccion.tipo_transaccion == 'compra' %}selected{% endif %}>Compra</option>
+                            <option value="venta" {% if transaccion.tipo_transaccion == 'venta' %}selected{% endif %}>Venta</option>
+                            <option value="transferencia" {% if transaccion.tipo_transaccion == 'transferencia' %}selected{% endif %}>Transferencia</option>
+                        </select>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="monto" class="form-label">Monto ($)</label>
+                            <input type="number" class="form-control" id="monto" name="monto" step="0.01" value="{{ transaccion.monto }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cantidad" class="form-label">Cantidad (Opcional)</label>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" step="0.0001" value="{{ transaccion.cantidad|default:'' }}" placeholder="Para compras/ventas">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 p-3 bg-light rounded">
+                        <h6 class="mb-2">Información de la Transacción:</h6>
+                        <p class="mb-1">Fecha Original: {{ transaccion.fecha|date:"d/m/Y H:i" }}</p>
+                        <p class="mb-0">Usuario: {{ transaccion.usuario.nombre }} {{ transaccion.usuario.apellido }}</p>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'inicio_transaccion' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-save me-1"></i>Actualizar Transacción
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

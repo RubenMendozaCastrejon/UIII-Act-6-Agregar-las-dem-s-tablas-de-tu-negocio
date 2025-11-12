@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Actualizar Activo: {{ activo.nombre }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'realizar_actualizacion_activo' activo.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del Activo</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ activo.nombre }}" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tipo" class="form-label">Tipo de Activo</label>
+                            <select class="form-select" id="tipo" name="tipo" required>
+                                <option value="accion" {% if activo.tipo == 'accion' %}selected{% endif %}>Acción</option>
+                                <option value="bono" {% if activo.tipo == 'bono' %}selected{% endif %}>Bono</option>
+                                <option value="cripto" {% if activo.tipo == 'cripto' %}selected{% endif %}>Criptomoneda</option>
+                                <option value="fondo" {% if activo.tipo == 'fondo' %}selected{% endif %}>Fondo de inversión</option>
+                                <option value="otro" {% if activo.tipo == 'otro' %}selected{% endif %}>Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="simbolo" class="form-label">Símbolo</label>
+                            <input type="text" class="form-control" id="simbolo" name="simbolo" value="{{ activo.simbolo }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="precio_actual" class="form-label">Precio Actual</label>
+                            <input type="number" class="form-control" id="precio_actual" name="precio_actual" step="0.01" value="{{ activo.precio_actual }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="volatilidad" class="form-label">Volatilidad (%)</label>
+                            <input type="number" class="form-control" id="volatilidad" name="volatilidad" step="0.01" value="{{ activo.volatilidad }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="mercado" class="form-label">Mercado</label>
+                        <input type="text" class="form-control" id="mercado" name="mercado" value="{{ activo.mercado }}" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'inicio_activo' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-save me-1"></i>Actualizar Activo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
