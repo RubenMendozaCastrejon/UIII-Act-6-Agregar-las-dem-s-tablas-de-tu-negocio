@@ -47,3 +47,12 @@ Editar
 <img width="1920" height="1024" alt="image" src="https://github.com/user-attachments/assets/71fb5aa8-024f-4902-9968-a22eac475cba" />
 Eliminar
 <img width="1920" height="1028" alt="image" src="https://github.com/user-attachments/assets/7cf8e913-780e-4b8e-9659-31b1209cbbca" />
+
+**Historial**
+<img width="1920" height="1028" alt="image" src="https://github.com/user-attachments/assets/4e5b26ae-5ee0-42a6-baee-1673bf1d9d7e" />
+Agregar
+<img width="1920" height="1026" alt="image" src="https://github.com/user-attachments/assets/eb882298-7f33-4e87-9130-b1e05292bd17" />
+Editar
+<img width="1920" height="1033" alt="image" src="https://github.com/user-attachments/assets/dc3f3760-cf1e-4d46-8983-8ee1857e77ce" />
+Eliminar
+<img width="1920" height="1036" alt="image" src="https://github.com/user-attachments/assets/fb2000fb-0d81-4f20-85bf-6cd20fca744e" />
